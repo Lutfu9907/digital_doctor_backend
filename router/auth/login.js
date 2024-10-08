@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 
-MainRouter.post('/login', async (req, res) => {
+MainRouter.post('/', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -34,5 +34,7 @@ MainRouter.post('/login', async (req, res) => {
     return res.status(500).json({ message: 'Sunucu hatası' });
   }
 });
+
+console.log(User);
 
 module.exports = MainRouter;

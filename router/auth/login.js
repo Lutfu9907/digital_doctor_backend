@@ -35,6 +35,4 @@ MainRouter.post('/', async (req, res) => {
   }
 });
 
-console.log(User);
-
 module.exports = MainRouter;

@@ -1,0 +1,27 @@
+Register();
+Register işlemi tamamlandı.
+
+Login();
+Kullanıcı giriş yaptığında (auth/login), kullanıcının girdiği şifre hash'lenmiş şifre ile karşılaştırılır.
+Eğer şifre doğruysa,jsonwebtoken ile bir token üretilir ve yanıt olarak kullanıcıya gönderilir.
+Bu işlemler yapıldı ancak login.vue 80. ve 125. satırlar kontrol edilecek.(401 Unauthorized hatası)
+
+Şifremi Unuttum (auth/forgot-password):
+Kullanıcı e-posta adresini girer. Ardından, backend tarafında bir reset kodu üretilir ve kullanıcıya e-posta ile gönderilir.
+Bu kod ile şifre yenileme işlemi yapılır.
+
+Şifre resetleme;
+Bu entegrasyon kullanıcının mail adresine gerekli link atılarak şifre sıfırlama işlemi yapılacak.
+
+Axios ile Avatar İşlemi:
+Kullanıcının avatar yükleme işlemi için axios kütüphanesi kullanılacak. Kullanıcı avatar seçip yüklediğinde, bu istek axios ile backend'e gönderilir.
+Avatar resmi backend tarafından işlenip, sunucuya kaydedilir.
+
+Utils ya da Helpers Klasörü:
+Proje içerisinde utils veya helpers adında bir klasör oluşturulacak.
+Bu klasörün içinde clients adında bir alt klasör yer alacak.
+clients klasörüne openai.js dosyası eklenecek. Bu dosyada, OpenAI ile ilgili tüm işlemler axios kullanılarak yapılacak.
+
+Env Dosyası:
+Proje içerisinde .env dosyasına token eklenecek. Bu token, OpenAI API talepleri için kullanılacak.
+Ayrıca .env dosyasının .gitignore dosyasında olup olmadığı kontrol edilecek. .env dosyası gizli olduğu için Git'e gönderilmemesi gerekir.

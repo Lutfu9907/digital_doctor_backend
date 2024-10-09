@@ -1,15 +1,23 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { uniq } = require('awilix/lib/utils.js');
 
 
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique:true
   },
   password: {
     type: String,
     required: true
+  },
+  resetCode: {
+    type: String, 
+  },
+  resetCodeExpires: {
+    type: Date, 
   },
   createdAt: {
     type: Date,

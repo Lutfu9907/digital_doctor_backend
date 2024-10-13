@@ -1,5 +1,4 @@
 const MainRouter = require('express').Router();
-const bcrypt = require('bcrypt'); 
 const User = require('../../models/User'); 
 
 MainRouter.post('/', async (req, res) => {
@@ -15,12 +14,10 @@ MainRouter.post('/', async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: 'Bu email zaten kayıtlı.' });
     }
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       email,
-      password: hashedPassword 
+      password
     });
 
     await newUser.save();

@@ -1,17 +1,8 @@
-Register();
-Register işlemi tamamlandı.
+backend.
+- auth middlewaresini yaz
+- şifre eu standartlarında oluşturulsun hem fe de hem be de kontrol et
+- kullanıcı işlemlerinde bilgi dönme. şifre veya kullanıcı adı hatalı mesajı dön. yada sistem hatası mesajı. detay verme.
 
-Login();
-Kullanıcı giriş yaptığında (auth/login), kullanıcının girdiği şifre hash'lenmiş şifre ile karşılaştırılır.
-Eğer şifre doğruysa,jsonwebtoken ile bir token üretilir ve yanıt olarak kullanıcıya gönderilir.
-Bu işlemler yapıldı ancak login.vue 80. ve 125. satırlar kontrol edilecek.(401 Unauthorized hatası)
-
-Şifremi Unuttum (auth/forgot-password):
-Kullanıcı e-posta adresini girer. Ardından, backend tarafında bir reset kodu üretilir ve kullanıcıya e-posta ile gönderilir.
-Bu kod ile şifre yenileme işlemi yapılır.
-
-Şifre resetleme;
-Bu entegrasyon kullanıcının mail adresine gerekli link atılarak şifre sıfırlama işlemi yapılacak.
 
 Axios ile Avatar İşlemi:
 Kullanıcının avatar yükleme işlemi için axios kütüphanesi kullanılacak. Kullanıcı avatar seçip yüklediğinde, bu istek axios ile backend'e gönderilir.

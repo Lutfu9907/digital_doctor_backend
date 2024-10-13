@@ -1,8 +1,16 @@
 const express = require('express');
 const mongoose=require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const router = require('./router');
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+
+router(app);
 
 mongoose.connect(process.env.MONGO_URI, {
 }).then(() => {
@@ -10,19 +18,6 @@ mongoose.connect(process.env.MONGO_URI, {
 }).catch((error) => {
   console.error('MongoDB bağlantısı hatası:', error);
 });
-
-app.get('/', (req, res) => {
-  res.send('hello world');
-});
-
-const cors = require('cors');
-app.use(cors());
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
-const router = require('./router');
-router(app);
 
 console.log(process.env.PORT);
 app.listen(process.env.PORT);

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { uniq } = require('awilix/lib/utils.js');
 
 
 const userSchema = new mongoose.Schema({
@@ -13,18 +12,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  resetCode: {
-    type: String, 
-  },
-  resetCodeExpires: {
-    type: Date, 
-  },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
-
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

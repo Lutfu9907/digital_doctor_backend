@@ -1,6 +1,6 @@
 backend.
 - auth middlewaresini yaz
-- şifre eu standartlarında oluşturulsun hem fe de hem be de kontrol et
+- şifre eu standartlarında oluşturulsun hem frontend de hem backend de kontrol et
 - kullanıcı işlemlerinde bilgi dönme. şifre veya kullanıcı adı hatalı mesajı dön. yada sistem hatası mesajı. detay verme.
 
 

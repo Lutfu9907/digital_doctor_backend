@@ -12,7 +12,7 @@ MainRouter.post('/', async (req, res) => {
     
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Bu email zaten kayıtlı.' });
+      return res.status(400).json({ message: 'Kayıt işlemi başarısız.' });
     }
 
     const newUser = new User({

@@ -7,7 +7,7 @@ MainRouter.post('/', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ message: 'Email ve şifre gereklidir' });
+    return res.status(400).json({ message: 'Giriş başarısız' });
   }
 
   try {

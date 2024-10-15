@@ -1,7 +1,5 @@
 backend.
-- auth middlewaresini yaz
 - şifre eu standartlarında oluşturulsun hem frontend de hem backend de kontrol et
-- kullanıcı işlemlerinde bilgi dönme. şifre veya kullanıcı adı hatalı mesajı dön. yada sistem hatası mesajı. detay verme.
 
 
 Axios ile Avatar İşlemi:
@@ -15,4 +13,3 @@ clients klasörüne openai.js dosyası eklenecek. Bu dosyada, OpenAI ile ilgili 
 
 Env Dosyası:
 Proje içerisinde .env dosyasına token eklenecek. Bu token, OpenAI API talepleri için kullanılacak.
-Ayrıca .env dosyasının .gitignore dosyasında olup olmadığı kontrol edilecek. .env dosyası gizli olduğu için Git'e gönderilmemesi gerekir.

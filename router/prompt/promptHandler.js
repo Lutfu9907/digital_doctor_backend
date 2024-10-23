@@ -11,6 +11,9 @@ MainRouter.post('/', async (req, res) => {
     // Yaygın Semptomlar
     'ağrı', 'ateş', 'yorgunluk', 'nefes darlığı', 'öksürük', 'bulantı', 'kusma', 'ishal', 'kabızlık', 'şişlik', 'kızarıklık', 
     'uyuşma', 'karıncalanma', 'baş dönmesi', 'üşüme', 'terleme', 'cilt', 'kaşıntı', 'kanama', 'yaralanma',
+
+    //Ciddi Sağlık Durumları
+    'ana arter', 'kalp krizi', 'kan pıhtısı', 'şiddetli kanama', 'koma', 'beyin kanaması', 'inme', 'boğulma',
   
     // Yaygın Hastalıklar
     'grip', 'soğuk algınlığı', 'nezle', 'zatürre', 'bronşit', 'enfeksiyon', 'şeker hastalığı', 'yüksek tansiyon', 'astım', 'alerji',
@@ -38,8 +41,15 @@ MainRouter.post('/', async (req, res) => {
   let messages = [
     {
       role: 'system',
-      content: `Sen bir sağlık danışmanısın. Kullanıcılara ağrının türü ve şiddeti hakkında daha fazla bilgi istemek için sorular sor ve tedavi yöntemleriyle ilgili önerilerde bulun. 
-      Kullanıcıların sağlık durumuna göre spesifik öneriler sun, ilaç önerisi yap, ancak her durumda doktora gitmelerini öner.`,
+      content: `Sen bir sağlık danışmanısın ve sadece sağlık konularında bilgi veriyorsun. 
+      Kullanıcılara ağrının türü ve şiddeti hakkında daha fazla bilgi istemek için sorular sor ve tedavi yöntemleriyle ilgili önerilerde bulun. 
+      Kullanıcıların sağlık durumuna göre spesifik öneriler sun, ilaç önerisi yap, ancak her durumda doktora gitmelerini öner.
+      Ağır ve ciddi sağlık sorunlarına yönelik tıbbi literatürden faydalanarak spesifik ve güvenilir bilgiler ver.
+      Sağlık dışı konulara yanıt verme, eğer konu sağlıkla ilgili değilse yanıt verme ve 
+      kullanıcıya yalnızca sağlıkla ilgili konularda yardımcı olabileceğini belirt
+      Yanıtlarını tam ve anlaşılır cümlelerle oluştur, 
+      yarım cümleler kullanma. Cümlelerin imla ve noktalama kurallarına uygun olsun. 
+      Gerekirse daha az kelime kullanarak yanıt ver ama mutlaka cümlelerin anlamlı ve tamamlanmış olsun.`,
     },
   ];
 

@@ -19,7 +19,7 @@ MainRouter.post('/', async (req, res) => {
 
     const healthKeywords = [
       // Vücut Bölümleri
-      'baş', 'göz', 'kulak', 'burun', 'boğaz', 'karın', 'mide', 'bacak', 'kol', 'el', 'ayak', 'omuz', 'sırt', 'bel',
+      'baş', 'göz', 'kulak', 'burun', 'boğaz', 'karın', 'mide', 'bacak', 'kol', 'el', 'ayak', 'omuz', 'sırt', 'bel','organ',
 
       // Yaygın Semptomlar
       'ağrı', 'ateş', 'yorgunluk', 'nefes darlığı', 'öksürük', 'bulantı', 'kusma', 'ishal', 'kabızlık', 'şişlik', 'kızarıklık',
@@ -54,27 +54,19 @@ MainRouter.post('/', async (req, res) => {
     let messages = [
       {
         role: 'system',
-        content: `Sen bir sağlık danışmanısın ve sadece sağlık konularında bilgi veriyorsun. 
-        Kullanıcılara ağrının türü ve şiddeti hakkında daha fazla bilgi istemek için sorular sor ve tedavi yöntemleriyle ilgili önerilerde bulun. 
-        Kullanıcıların sağlık durumuna göre spesifik öneriler sun, ilaç önerisi yap, ancak her durumda doktora gitmelerini öner.
-        Ağır ve ciddi sağlık sorunlarına yönelik tıbbi literatürden faydalanarak spesifik ve güvenilir bilgiler ver.
-        Sağlık dışı konulara yanıt verme, eğer konu sağlıkla ilgili değilse yanıt verme ve 
-        kullanıcıya yalnızca sağlıkla ilgili konularda yardımcı olabileceğini belirt
-        Yanıtlarını tam ve anlaşılır cümlelerle oluştur, 
-        yarım cümleler kullanma. Cümlelerin imla ve noktalama kurallarına uygun olsun. 
-        Gerekirse daha az kelime kullanarak yanıt ver ama mutlaka cümlelerin anlamlı ve tamamlanmış olsun.`,
+        content: `Sen bir sağlık danışmanısın ve yalnızca sağlık konularında bilgi veriyorsun. 
+        Kullanıcılardan ağrının türü ve şiddeti hakkında daha fazla bilgi isteyerek, uygun tedavi yöntemleri öner. 
+        İlaç tavsiyesinde bulunabilirsin, ancak her durumda doktora gitmelerini tavsiye et. 
+        Ciddi sağlık sorunları için güvenilir tıbbi literatüre dayalı spesifik bilgiler ver. 
+        Sağlık dışı soruları yanıtlama ve yalnızca sağlıkla ilgili konularda yardımcı olabileceğini belirt. 
+        Yanıtlarını kısa, net ve öz tut. Gerektiğinde kullanıcının sorularına göre daha fazla ayrıntı ver. 
+        Cümlelerini tam, açık ve anlaşılır şekilde oluştur; yazım ve imla kurallarına dikkat et.`,
       },
     ];
 
-    messages.push({
-      role: 'user',
-      content: userMessage,
-    });
-
-    const assistantMessage = await sendMessageToOpenAI(messages);
-
+    
     let chatHistory = await ChatHistory.findOne({ userId });
-
+    
     if (!chatHistory) {
       chatHistory = new ChatHistory({
         userId,
@@ -82,11 +74,25 @@ MainRouter.post('/', async (req, res) => {
       });
     }
 
+    chatHistory.history.forEach((chat) => {
+      messages.push({
+        role: chat.contextType === 1 ? 'user' : 'assistant',
+        content: chat.content,
+      });
+    });
+
+    messages.push({
+      role: 'user',
+      content: userMessage,
+    });
+
+    const assistantMessage = await sendMessageToOpenAI(messages);
+    
     chatHistory.history.push({
       contextType: 1,
       content: userMessage,
     });
-
+    
     chatHistory.history.push({
       contextType: 2,
       content: assistantMessage

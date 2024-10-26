@@ -2,75 +2,53 @@ const ChatHistory = require('../../models/ChatHistory');
 const User = require('../../models/User');
 const MainRouter = require('express').Router();
 const { sendMessageToOpenAI } = require('../../clients/openai');
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken');
 
 MainRouter.post('/', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
-    return res.status(401).json({ message: 'Yetkisiz erişim' }); 
+    return res.status(401).json({ message: 'Yetkisiz erişim' });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
     console.log('user ID', userId);
 
     const userMessage = req.body.message;
 
-    const healthKeywords = [
-      // Vücut Bölümleri
-      'baş', 'göz', 'kulak', 'burun', 'boğaz', 'karın', 'mide', 'bacak', 'kol', 'el', 'ayak', 'omuz', 'sırt', 'bel','organ',
-
-      // Yaygın Semptomlar
-      'ağrı', 'ateş', 'yorgunluk', 'nefes darlığı', 'öksürük', 'bulantı', 'kusma', 'ishal', 'kabızlık', 'şişlik', 'kızarıklık',
-      'uyuşma', 'karıncalanma', 'baş dönmesi', 'üşüme', 'terleme', 'cilt', 'kaşıntı', 'kanama', 'yaralanma',
-
-      // Ciddi Sağlık Durumları
-      'ana arter', 'kalp krizi', 'kan pıhtısı', 'şiddetli kanama', 'koma', 'beyin kanaması', 'inme', 'boğulma',
-
-      // Yaygın Hastalıklar
-      'grip', 'soğuk algınlığı', 'nezle', 'zatürre', 'bronşit', 'enfeksiyon', 'şeker hastalığı', 'yüksek tansiyon', 'astım', 'alerji',
-      'depresyon', 'anksiyete', 'migren', 'sinüzit', 'göz iltihabı', 'kulak iltihabı', 'diş ağrısı', 'kalp krizi', 'felç', 'kanser',
-
-      // İlaçlar ve Tedavi Türleri
-      'ilaç', 'antibiyotik', 'ağrı kesici', 'antidepresan', 'iğne', 'serum', 'ameliyat', 'röntgen', 'ultrason', 'kan tahlili',
-      'MR', 'tomografi', 'fizik tedavi', 'psikoterapi',
-
-      // Sağlıkla İlgili Genel Konular
-      'beslenme', 'diyet', 'egzersiz', 'uyku', 'sigara', 'alkol', 'kilo', 'stres', 'sağlıklı yaşam', 'spor', 'vitamin', 'mineral',
-      'probiyotik', 'lif', 'protein', 'karbonhidrat', 'şeker', 'tuz', 'kolesterol', 'kan basıncı', 'kalori', 'su tüketimi', 'hidrasyon'
-    ];
-
-    const isHealthRelated = healthKeywords.some((keyword) =>
-      userMessage.toLowerCase().includes(keyword)
-    );
-
-    if (!isHealthRelated) {
-      return res.send(
-        'Ben yalnızca sağlıkla ilgili konularda yardımcı olabilirim.'
-      );
-    }
-
     let messages = [
       {
         role: 'system',
         content: `Sen bir sağlık danışmanısın ve yalnızca sağlık konularında bilgi veriyorsun. 
-        Kullanıcılardan ağrının türü ve şiddeti hakkında daha fazla bilgi isteyerek, uygun tedavi yöntemleri öner. 
-        İlaç tavsiyesinde bulunabilirsin, ancak her durumda doktora gitmelerini tavsiye et. 
+        
         Ciddi sağlık sorunları için güvenilir tıbbi literatüre dayalı spesifik bilgiler ver. 
-        Sağlık dışı soruları yanıtlama ve yalnızca sağlıkla ilgili konularda yardımcı olabileceğini belirt. 
+        
+        Kullanıcı şikayetini söyledikten sonra 3 tane soru sor gelen cevaplar neticesinde ilk önce doğal önerilerde bulun
+        örneğin, eğer karnı ağrıyorsa sıcak su torbası gibi önerilerde bulun.Sonrasında hastanın bulgularını değerlendirip 
+        ilaç önerisinde bulun ve son olarak cümlenin sonunda doktora gitmesini öner.
+        
         Yanıtlarını kısa, net ve öz tut. Gerektiğinde kullanıcının sorularına göre daha fazla ayrıntı ver. 
-        Cümlelerini tam, açık ve anlaşılır şekilde oluştur; yazım ve imla kurallarına dikkat et.`,
+        Cümlelerini tam, açık ve anlaşılır şekilde oluştur; yazım ve imla kurallarına dikkat et.
+        
+        Ayrıca, önceki konuşmaları analiz et ve hastanın verdiği bilgilere dayanarak uygun sorular sor. 
+        Hastanın mevcut durumunu analiz ederek önerilerde bulun; sağlık durumu kötüleşiyorsa acil müdahale gerektiren önerilerde bulun.
+        Hastanın belirttiği semptomlara göre özel tedavi önerileri yap ve kullanıcının sağlık geçmişine uygun yanıtlar ver.
+        
+        Sağlık dışı konularda none dön.
+
+        Yanıtın çok uzun olabileceğini fark ettiğinde, yanıtı 150 token'dan fazla vermemeye çalış. Eğer cevabın tamamlanmadıysa,
+        Yanıtın devamını görmek ister misiniz?' şeklinde soru sor.
+        Cevabı mutlaka tamamla eksik cevap yazma.`,
       },
     ];
 
-    
     let chatHistory = await ChatHistory.findOne({ userId });
-    
+
     if (!chatHistory) {
       chatHistory = new ChatHistory({
         userId,
-        history: []
+        history: [],
       });
     }
 
@@ -87,15 +65,15 @@ MainRouter.post('/', async (req, res) => {
     });
 
     const assistantMessage = await sendMessageToOpenAI(messages);
-    
+
     chatHistory.history.push({
       contextType: 1,
       content: userMessage,
     });
-    
+
     chatHistory.history.push({
       contextType: 2,
-      content: assistantMessage
+      content: assistantMessage,
     });
 
     await chatHistory.save();

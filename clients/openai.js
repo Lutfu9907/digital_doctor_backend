@@ -9,7 +9,7 @@ const sendMessageToOpenAI = async (messages) => {
     const response = await openai.chat.completions.create({
       model: 'gpt-4-turbo',
       messages: messages,
-      max_tokens:200,
+      max_tokens:150,
       temperature:0.3,
     });
 

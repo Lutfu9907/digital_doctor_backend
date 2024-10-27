@@ -1,8 +1,7 @@
-const ChatHistory = require('../../models/ChatHistory');
-const User = require('../../models/User');
 const MainRouter = require('express').Router();
-const { sendMessageToOpenAI } = require('../../clients/openai');
 const jwt = require('jsonwebtoken');
+const ChatHistory = require('../../models/ChatHistory');
+const { sendMessageToOpenAI } = require('../../clients/openai');
 
 MainRouter.post('/', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];

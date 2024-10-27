@@ -1,9 +1,7 @@
 backend.
 - şifre eu standartlarında oluşturulsun hem frontend de hem backend de kontrol et
 
--manuel yeni oturum açma butonu oluşacak
--solda yeni oluştur butonu yap kullancı buna tıkladığı zaman yeni pencere açılsın orada hastalığını söylesin.
--bi kart olacak üzerinde + simgesi olabilir buna tıklayınca db de yeni pencere açılacak.
+-bi kart olacak üzerinde + simgesi olabilir buna tıklayınca ilk önce yeni pencere frontende açılacak bu sayede db de yeni pencere açılacak.
 -system template'ini geliştirmeye devam et.
 
 Axios ile Avatar İşlemi:

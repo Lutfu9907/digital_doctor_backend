@@ -3,11 +3,9 @@ const ChatHistory = require('../../models/ChatHistory');
 const authMiddleware = require('../auth/authMiddleware');
 
 MainRouter.post('/', authMiddleware, async (req, res) => {
-  const { userId } = req.user.id;
+  const userId = req.user.id;
 
-  if (!userId) {
-    return res.status(400).json({ message: 'Kullanıcı ID gereklidir.' });
-  }
+  console.log('Yeni Sohbet için Kullanıcı ID:', userId);
 
   try {
     const newChat = new ChatHistory({

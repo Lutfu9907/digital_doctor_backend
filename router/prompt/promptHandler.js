@@ -12,9 +12,9 @@ MainRouter.post('/', async (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
-    console.log('user ID', userId);
 
     const userMessage = req.body.message;
+    const chatId = req.body.chatId;
 
     let messages = [
       {
@@ -42,9 +42,14 @@ MainRouter.post('/', async (req, res) => {
       },
     ];
 
-    let chatHistory = await ChatHistory.findOne({ userId });
+    let chatHistory;
 
-    if (!chatHistory) {
+    if (chatId) {
+      chatHistory = await ChatHistory.findById(chatId);
+      if (!chatHistory) {
+        return res.status(404).json({ message: 'Sohbet bulunamadı' });
+      }
+    } else {
       chatHistory = new ChatHistory({
         userId,
         history: [],

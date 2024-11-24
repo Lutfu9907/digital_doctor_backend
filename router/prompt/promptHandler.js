@@ -2,6 +2,7 @@ const MainRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const ChatHistory = require('../../models/ChatHistory');
 const { sendMessageToOpenAI } = require('../../clients/openai');
+const { convertTextToSpeech } = require('../../clients/tts');
 
 MainRouter.post('/', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -33,8 +34,6 @@ MainRouter.post('/', async (req, res) => {
         Ayrıca, önceki konuşmaları analiz et ve hastanın verdiği bilgilere dayanarak uygun sorular sor. 
         Hastanın mevcut durumunu analiz ederek önerilerde bulun; sağlık durumu kötüleşiyorsa acil müdahale gerektiren önerilerde bulun.
         Hastanın belirttiği semptomlara göre özel tedavi önerileri yap ve kullanıcının sağlık geçmişine uygun yanıtlar ver.
-        
-        Sağlık dışı konularda none dön.
 
         Yanıtın çok uzun olabileceğini fark ettiğinde, yanıtı 150 token'dan fazla vermemeye çalış. Eğer cevabın tamamlanmadıysa,
         Yanıtın devamını görmek ister misiniz?' şeklinde soru sor.
@@ -82,12 +81,19 @@ MainRouter.post('/', async (req, res) => {
 
     await chatHistory.save();
 
-    messages.push({
-      role: 'assistant',
-      content: assistantMessage,
+    const audioFilePath = await convertTextToSpeech(assistantMessage);
+    res.json({
+      text: assistantMessage,
+      audioFilePath,
     });
 
-    res.send(assistantMessage);
+    // messages.push({
+    //   role: 'assistant',
+    //   content: assistantMessage,
+    // });
+
+    // res.send(assistantMessage);
+
   } catch (error) {
     console.error('Mesaj gönderme hatası:', error);
     res.status(500).send('Sunucu hatası');

@@ -2,8 +2,6 @@ const textToSpeech = require('@google-cloud/text-to-speech');
 const fs = require('fs');
 const path = require('path');
 
-process.env.GOOGLE_APPLICATION_CREDENTIALS = 'my-project.json';
-
 const client = new textToSpeech.TextToSpeechClient();
 
 const convertTextToSpeech = async (text) => {

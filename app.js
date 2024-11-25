@@ -3,12 +3,16 @@ const mongoose=require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const router = require('./router');
+const path = require('path');
+
 require('dotenv').config();
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/temp', express.static(path.join(__dirname, 'clients/temp')));
+
 
 router(app);
 

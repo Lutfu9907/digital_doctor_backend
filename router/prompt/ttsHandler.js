@@ -11,6 +11,7 @@ MainRouter.post('/', async (req, res) => {
 
   try {
     const audioFilePath = await convertTextToSpeech(message);
+    console.log('Ses dosyası yolu:',audioFilePath);
 
     res.json({
       audioUrl: `http://localhost:3000/temp/${path.basename(audioFilePath)}`,

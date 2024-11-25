@@ -3,7 +3,8 @@ backend.
 
 - ağrı tipini de mutlaka sorsun.
 
-- frontend --> google tts bağlantısında sıkıntı var orayı kontrol edeceksin.
+
+- ses dosyası frontendde .mp3 dosyasını yollayacaksın.
 
 - Axios ile Avatar İşlemi:
 Kullanıcının avatar yükleme işlemi için axios kütüphanesi kullanılacak. Kullanıcı avatar seçip yüklediğinde, bu istek axios ile backend'e gönderilir.

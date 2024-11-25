@@ -11,7 +11,7 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/temp', express.static(path.join(__dirname, 'clients/temp')));
+app.use('/temp', express.static(path.join(__dirname, 'clients', 'temp')));
 
 
 router(app);

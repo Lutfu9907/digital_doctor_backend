@@ -2,8 +2,6 @@ backend.
 - şifre eu standartlarında oluşturulsun hem frontend de hem backend de kontrol et
 
 - ağrı tipini de mutlaka sorsun.
-
-
 - ses dosyası frontendde .mp3 dosyasını yollayacaksın.
 
 - Axios ile Avatar İşlemi:

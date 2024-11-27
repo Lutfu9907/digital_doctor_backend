@@ -13,7 +13,7 @@ const convertTextToSpeech = async (text) => {
 
     const request = {
       input: { text },
-      voice: { languageCode: 'tr-TR', ssmlGender: 'FEMALE' },
+      voice: { languageCode: 'tr-TR', ssmlGender: 'MALE' },
       audioConfig: { audioEncoding: 'MP3' },
     };
 

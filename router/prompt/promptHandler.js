@@ -2,6 +2,7 @@ const MainRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const ChatHistory = require('../../models/ChatHistory');
 const { sendMessageToOpenAI } = require('../../clients/openai');
+const { convertTextToSpeech } = require('../../clients/tts');
 
 MainRouter.post('/', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -68,6 +69,8 @@ MainRouter.post('/', async (req, res) => {
 
     const assistantMessage = await sendMessageToOpenAI(messages);
 
+    const audioUrl = await convertTextToSpeech(assistantMessage);
+
     chatHistory.history.push({
       contextType: 1,
       content: userMessage,
@@ -80,12 +83,10 @@ MainRouter.post('/', async (req, res) => {
 
     await chatHistory.save();
 
-    messages.push({
-      role: 'assistant',
-      content: assistantMessage,
+    res.json({
+      messages: assistantMessage,
+      audioUrl: `http://localhost:3000/temp/${audioUrl}`,
     });
-
-    res.send(assistantMessage);
   } catch (error) {
     console.error('Mesaj gönderme hatası:', error);
     res.status(500).send('Sunucu hatası');

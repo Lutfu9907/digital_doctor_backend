@@ -69,8 +69,9 @@ MainRouter.post('/', async (req, res) => {
 
     const assistantMessage = await sendMessageToOpenAI(messages);
 
-    const audioUrl = await convertTextToSpeech(assistantMessage);
-
+    // const audioUrl = 
+    await convertTextToSpeech(assistantMessage);
+    
     chatHistory.history.push({
       contextType: 1,
       content: userMessage,
@@ -82,11 +83,14 @@ MainRouter.post('/', async (req, res) => {
     });
 
     await chatHistory.save();
+    
+    res.json(assistantMessage);
 
-    res.json({
-      messages: assistantMessage,
-      audioUrl: `http://localhost:3000/temp/${audioUrl}`,
-    });
+    // res.json({
+    //   messages: assistantMessage,
+    //   audioUrl: `/temp/${audioUrl}`,
+    // });
+    
   } catch (error) {
     console.error('Mesaj gönderme hatası:', error);
     res.status(500).send('Sunucu hatası');

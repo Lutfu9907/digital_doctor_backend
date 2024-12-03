@@ -1,5 +1,4 @@
 const MainRouter = require('express').Router();
-const { sendMessageToOpenAI } = require('../../clients/openai');
 const { convertTextToSpeech } = require('../../clients/tts');
 const path = require('path');
 
@@ -11,17 +10,10 @@ MainRouter.post('/', async (req, res) => {
   }
 
   try {
-    const assistantMessage = await sendMessageToOpenAI([
-      {
-        role: 'user',
-        content: message,
-      },
-    ]);
-
-    const audioFilePath = await convertTextToSpeech(assistantMessage);
+    const audioFilePath = await convertTextToSpeech(message);
 
     res.json({
-      message: assistantMessage,
+      message: message,
       audioUrl: `http://localhost:3000/temp/${path.basename(audioFilePath)}`,
     });
   } catch (error) {

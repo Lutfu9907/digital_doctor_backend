@@ -15,7 +15,11 @@ const convertTextToSpeech = async (text) => {
     const request = {
       input: { text },
       voice: { languageCode: 'tr-TR', ssmlGender: 'MALE' },
-      audioConfig: { audioEncoding: 'MP3' },
+      audioConfig: { 
+        audioEncoding: 'MP3',
+        speakingRate: 1.1,
+        pitch: -2.0,
+      },
     };
 
     const [response] = await client.synthesizeSpeech(request);

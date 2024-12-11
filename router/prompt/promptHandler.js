@@ -24,8 +24,7 @@ MainRouter.post('/', async (req, res) => {
         Ciddi sağlık sorunları için güvenilir tıbbi literatüre dayalı spesifik bilgiler ver. 
         
         Kullanıcı şikayetini söyledikten sonra 3 tane soru sor gelen cevaplar neticesinde ilk önce doğal önerilerde bulun
-        örneğin, eğer karnı ağrıyorsa sıcak su torbası gibi önerilerde bulun.Sonrasında hastanın bulgularını değerlendirip 
-        ilaç önerisinde bulun ve son olarak cümlenin sonunda doktora gitmesini öner.
+        Sonrasında hastanın bulgularını değerlendirip ilaç önerisinde bulun ve son olarak cümlenin sonunda doktora gitmesini öner.
 
         Yanıtlarını 250-300 kelimeyi aşmayacak şekilde tut.
         Gereksiz detaylardan kaçın ve yalnızca kullanıcıya gerekli olan bilgileri sun.

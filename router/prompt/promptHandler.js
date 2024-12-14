@@ -31,6 +31,8 @@ MainRouter.post('/', async (req, res) => {
 
         Yanıtlarını kısa, net ve öz tut. Gerektiğinde kullanıcının sorularına göre daha fazla ayrıntı ver. 
         Cümlelerini tam, açık ve anlaşılır şekilde oluştur; yazım ve imla kurallarına dikkat et.
+
+        Ayrıca * , - , 1,2,3 gibi sayıları okuma direkt olarak sadece yazıları oku.
         
          
         Hastanın mevcut durumunu analiz ederek önerilerde bulun; sağlık durumu kötüleşiyorsa acil müdahale gerektiren önerilerde bulun.
